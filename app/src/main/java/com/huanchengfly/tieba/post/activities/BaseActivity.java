@@ -44,10 +44,16 @@ import static com.huanchengfly.tieba.post.utils.ThemeUtil.THEME_CUSTOM;
 import static com.huanchengfly.tieba.post.utils.ThemeUtil.THEME_TRANSLUCENT;
 import static com.huanchengfly.tieba.post.utils.ColorUtils.getDarkerColor;
 
+/**
+ * 所有 Activity 类的基类
+ */
 public abstract class BaseActivity extends SwipeBackActivity implements ExtraRefreshable {
     public static final int NO_LAYOUT = -1;
     private TintToolbar mTintToolbar;
     private String oldTheme;
+    /**
+     * 判断当前活动是否运行状态
+     */
     private boolean activityRunning = true;
 
     protected int getLayoutId() {
@@ -62,9 +68,15 @@ public abstract class BaseActivity extends SwipeBackActivity implements ExtraRef
     protected void onPause() {
         super.onPause();
         activityRunning = false;
+        // 播放器释放所有的视频播放列表
         Jzvd.releaseAllVideos();
     }
 
+    /**
+     * 只有活动在当前运行状态，才会显示 Dialog
+     * @param dialog
+     * @return
+     */
     protected boolean showDialog(Dialog dialog) {
         if (isActivityRunning()) {
             dialog.show();
@@ -73,6 +85,10 @@ public abstract class BaseActivity extends SwipeBackActivity implements ExtraRef
         return false;
     }
 
+    /**
+     * 判断当前活动是否运行状态
+     * @return
+     */
     public boolean isActivityRunning() {
         return activityRunning;
     }
@@ -83,6 +99,10 @@ public abstract class BaseActivity extends SwipeBackActivity implements ExtraRef
         VoicePlayerView.Manager.release();
     }
 
+    /**
+     * 是否需要沉浸式状态栏
+     * @return
+     */
     public boolean isNeedImmersionBar() {
         return true;
     }
@@ -185,12 +205,23 @@ public abstract class BaseActivity extends SwipeBackActivity implements ExtraRef
         }
     }
 
+    /**
+     * 设置 ToolBar 标题
+     * @param newTitle
+     */
     public void setTitle(String newTitle) {
     }
 
+    /**
+     * 设置 ToolBar 子标题
+     * @param newTitle
+     */
     public void setSubTitle(String newTitle) {
     }
 
+    /**
+     * 获取设备的像素密度
+     */
     protected void getDeviceDensity() {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -204,6 +235,12 @@ public abstract class BaseActivity extends SwipeBackActivity implements ExtraRef
         BaseApplication.ScreenInfo.SCREEN_WIDTH = (int) (width / density);
     }
 
+    /**
+     * 图像的颜色动画
+     * @param view
+     * @param value
+     * @return
+     */
     protected ValueAnimator colorAnim(ImageView view, int... value) {
         ValueAnimator animator = ObjectAnimator.ofArgb(new ImageViewAnimWrapper(view), "tint", value);
         animator.setDuration(150);
@@ -211,6 +248,12 @@ public abstract class BaseActivity extends SwipeBackActivity implements ExtraRef
         return animator;
     }
 
+    /**
+     * 文字的颜色动画
+     * @param view
+     * @param value
+     * @return
+     */
     protected ValueAnimator colorAnim(TextView view, int... value) {
         ValueAnimator animator = ObjectAnimator.ofArgb(new TextViewAnimWrapper(view), "textColor", value);
         animator.setDuration(150);
@@ -218,6 +261,9 @@ public abstract class BaseActivity extends SwipeBackActivity implements ExtraRef
         return animator;
     }
 
+    /**
+     * 刷新状态栏颜色
+     */
     public void refreshStatusBarColor() {
         if (THEME_TRANSLUCENT.equals(ThemeUtil.getTheme(this))) {
             ImmersionBar.with(this)

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'AndResGuard'
+//apply plugin: 'AndResGuard'
 apply plugin: 'io.michaelrocks.paranoid'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -16,8 +16,8 @@ buildscript {
     }
 }
 
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
+//def keystoreProperties = new Properties()
+//keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
 def applicationProperties = new Properties()
 applicationProperties.load(new FileInputStream(rootProject.file("application.properties")))
 def SHA1 = System.getenv("CIRCLE_SHA1")
@@ -31,47 +31,47 @@ if (isPerVersion) {
     applicationVersionName = applicationVersionName + ".${applicationProperties["preReleaseName"]}-${applicationProperties["preReleaseVer"]}"
 }
 
-andResGuard {
-    mappingFile = null
-    use7zip = true
-    useSign = true
-    keepRoot = false
-    mergeDuplicatedRes = true
-    whiteList = ["R.mipmap.ic_launcher",
-                 "R.mipmap.ic_launcher_foreground",
-                 "R.mipmap.ic_launcher_round",
-                 "R.drawable.ic_*",
-                 "R.color.theme_color_*",
-                 "R.id.*"]
-    compressFilePattern = ["*.png",
-                           "*.jpg",
-                           "*.jpeg",
-                           "*.gif",
-                           "*.webp",
-                           "*.kotlin_metadata",
-                           "resources.arsc"]
-    sevenzip {
-        artifact = 'com.tencent.mm:SevenZip:1.2.10'
-    }
-    finalApkBackupPath = "${project.rootDir}/app/release/${applicationVersionName}(${applicationVersionCode}).apk"
-    digestalg = "SHA-256"
-}
+//andResGuard {
+//    mappingFile = null
+//    use7zip = true
+//    useSign = true
+//    keepRoot = false
+//    mergeDuplicatedRes = true
+//    whiteList = ["R.mipmap.ic_launcher",
+//                 "R.mipmap.ic_launcher_foreground",
+//                 "R.mipmap.ic_launcher_round",
+//                 "R.drawable.ic_*",
+//                 "R.color.theme_color_*",
+//                 "R.id.*"]
+//    compressFilePattern = ["*.png",
+//                           "*.jpg",
+//                           "*.jpeg",
+//                           "*.gif",
+//                           "*.webp",
+//                           "*.kotlin_metadata",
+//                           "resources.arsc"]
+//    sevenzip {
+//        artifact = 'com.tencent.mm:SevenZip:1.2.10'
+//    }
+//    finalApkBackupPath = "${project.rootDir}/app/release/${applicationVersionName}(${applicationVersionCode}).apk"
+//    digestalg = "SHA-256"
+//}
 
 android {
-    signingConfigs {
-        release {
-            keyAlias keystoreProperties['releaseKeyAlias']
-            keyPassword keystoreProperties['releaseKeyPassword']
-            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['releaseKeyStore'])
-            storePassword keystoreProperties['releaseStorePassword']
-            v2SigningEnabled true
-        }
-    }
-    compileSdkVersion 29
+//    signingConfigs {
+//        release {
+//            keyAlias keystoreProperties['releaseKeyAlias']
+//            keyPassword keystoreProperties['releaseKeyPassword']
+//            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['releaseKeyStore'])
+//            storePassword keystoreProperties['releaseStorePassword']
+//            v2SigningEnabled true
+//        }
+//    }
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.huanchengfly.tieba.post"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode applicationVersionCode
         versionName applicationVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -84,7 +84,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
             jniDebuggable false
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
             zipAlignEnabled true
             multiDexEnabled true
         }
